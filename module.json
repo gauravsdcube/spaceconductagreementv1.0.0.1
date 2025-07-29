@@ -1,0 +1,18 @@
+{
+    "id": "space-conduct-agreement",
+    "name": "Space Conduct Agreement",
+    "description": "Require users to accept space-specific codes of conduct before joining spaces",
+    "keywords": ["conduct", "agreement", "space", "terms"],
+    "version": "1.0.0",
+    "humhub": {
+        "minVersion": "1.15.0"
+    },
+    "authors": [
+        {
+            "name": "D Cube Consulting",
+            "email": "info@dcubeconsulting.co.uk"
+        }
+    ],
+    "license": "Proprietary",
+    "copyright": "Copyright (c) 2025 D Cube Consulting. All rights reserved."
+} 
