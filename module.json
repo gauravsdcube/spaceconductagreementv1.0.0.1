@@ -1,18 +1,26 @@
 {
     "id": "space-conduct-agreement",
     "name": "Space Conduct Agreement",
-    "description": "Require users to accept space-specific codes of conduct before joining spaces",
-    "keywords": ["conduct", "agreement", "space", "terms"],
+    "description": "A production-ready HumHub module that requires users to accept space-specific codes of conduct before joining spaces, with comprehensive admin management and user tracking.",
+    "keywords": ["conduct", "agreement", "space", "terms", "code-of-conduct", "membership", "admin"],
     "version": "1.0.0",
     "humhub": {
-        "minVersion": "1.15.0"
+        "minVersion": "1.17.3",
+        "maxVersion": "1.17.*"
     },
     "authors": [
         {
-            "name": "D Cube Consulting",
-            "email": "info@dcubeconsulting.co.uk"
+            "name": "D Cube Consulting Ltd",
+            "email": "info@dcubeconsulting.co.uk",
+            "role": "Developer"
         }
     ],
+    "homepage": "https://dcubeconsulting.co.uk",
     "license": "Proprietary",
-    "copyright": "Copyright (c) 2025 D Cube Consulting. All rights reserved."
+    "copyright": "Copyright (c) 2025 D Cube Consulting Ltd. All rights reserved.",
+    "screenshots": [
+        "docs/screenshots/admin-interface.png",
+        "docs/screenshots/agreement-modal.png",
+        "docs/screenshots/user-acceptance.png"
+    ]
 } 
