@@ -166,37 +166,47 @@ class Events
     }
 
     /**
-     * Add admin button to space header controls
+     * Add Code of Conduct menu item to space navigation
+     */
+    public static function onSpaceMenuInit($event)
+    {
+        /** @var \humhub\modules\space\widgets\Menu $menu */
+        $menu = $event->sender;
+        $space = $menu->space;
+
+        if (!$space) {
+            return;
+        }
+
+        // Only show for space admins
+        if (!$space->isAdmin()) {
+            return;
+        }
+
+        // Check if module is enabled for this space
+        if (!$space->moduleManager->isEnabled('space-conduct-agreement')) {
+            return;
+        }
+
+        // Add Code of Conduct menu item
+        $menu->addItem([
+            'label' => Yii::t('SpaceConductAgreementModule.base', 'Code of Conduct'),
+            'url' => $space->createUrl('/space-conduct-agreement/admin/index'),
+            'icon' => '<i class="fa fa-file-text-o"></i>',
+            'isActive' => (Yii::$app->controller->module && 
+                          Yii::$app->controller->module->id === 'space-conduct-agreement' && 
+                          Yii::$app->controller->id === 'admin'),
+            'sortOrder' => 500,
+        ]);
+    }
+
+    /**
+     * Add admin button to space header controls (kept for backward compatibility)
      */
     public static function onHeaderControlsMenuInit($event)
     {
-        // Simple debug logging
-        Yii::info("=== SPACE CONDUCT AGREEMENT METHOD CALLED ===", 'space-conduct-agreement');
-        
-        // Just return for now to see if the method is called
+        // This method is kept for backward compatibility but is no longer used
+        // The navigation menu item is now used instead
         return;
-        
-        /** @var HeaderControlsMenu $headerMenu */
-        $headerMenu = $event->sender;
-        $space = $headerMenu->space;
-        
-        Yii::info("Space: " . ($space ? $space->id : 'null'), 'space-conduct-agreement');
-        
-        if (!$space || !$space->isAdmin()) {
-            Yii::info("Not adding button - space is null or user is not admin", 'space-conduct-agreement');
-            return;
-        }
-        
-        Yii::info("Adding Code of Conduct button to space header", 'space-conduct-agreement');
-        
-        $headerMenu->addItem([
-            'label' => Yii::t('SpaceConductAgreementModule.base', 'Code of Conduct'),
-            'url' => ['/space-conduct-agreement/admin/index', 'spaceId' => $space->id],
-            'icon' => '<i class="fa fa-file-text-o"></i>',
-            'sortOrder' => 500,
-            'isActive' => (Yii::$app->controller->route === 'space-conduct-agreement/admin/index'),
-        ]);
-        
-        Yii::info("Code of Conduct button added successfully", 'space-conduct-agreement');
     }
 }

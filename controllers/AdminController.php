@@ -12,12 +12,13 @@ use Yii;
 use yii\web\NotFoundHttpException;
 use humhub\components\Controller;
 use humhub\modules\space\models\Space;
+use humhub\modules\space\controllers\SpaceController;
 use humhub\modules\spaceconductagreement\models\SpaceAgreement;
 
 /**
  * Admin controller for managing space agreements
  */
-class AdminController extends Controller
+class AdminController extends SpaceController
 {
     /**
      * @inheritdoc
@@ -30,23 +31,37 @@ class AdminController extends Controller
     }
 
     /**
-     * Manage space agreement
+     * @inheritdoc
      */
-    public function actionIndex($spaceId)
+    public function beforeAction($action)
     {
-        $space = Space::findOne($spaceId);
-        if (!$space || !$space->isAdmin()) {
+        if (!parent::beforeAction($action)) {
+            return false;
+        }
+
+        // Check if user is space admin
+        if (!$this->contentContainer->isAdmin()) {
             throw new NotFoundHttpException();
         }
 
+        return true;
+    }
+
+    /**
+     * Manage space agreement
+     */
+    public function actionIndex()
+    {
+        $space = $this->contentContainer;
+
         // Always create a new model for the form
         $model = new SpaceAgreement();
-        $model->space_id = $spaceId;
+        $model->space_id = $space->id;
         $model->is_active = 1;
 
         if ($model->load(Yii::$app->request->post())) {
             // Deactivate all previous agreements for this space
-            SpaceAgreement::updateAll(['is_active' => 0], ['space_id' => $spaceId]);
+            SpaceAgreement::updateAll(['is_active' => 0], ['space_id' => $space->id]);
             // Save the new agreement
             if ($model->save()) {
                 Yii::$app->session->setFlash('success', 'Agreement saved successfully.');
@@ -54,7 +69,7 @@ class AdminController extends Controller
             }
         } else {
             // If GET, prefill with the latest active agreement if it exists
-            $latest = SpaceAgreement::findOne(['space_id' => $spaceId, 'is_active' => 1]);
+            $latest = SpaceAgreement::findOne(['space_id' => $space->id, 'is_active' => 1]);
             if ($latest) {
                 $model->title = $latest->title;
                 $model->content = $latest->content;

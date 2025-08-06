@@ -4,7 +4,7 @@
  *
  * @copyright Copyright (c) 2025 D Cube Consulting. All rights reserved.
  * @author D Cube Consulting <info@dcubeconsulting.co.uk>
- * @version 1.0.0
+ * @version 1.0.0.1
  * @license Proprietary - All Rights Reserved
  */
 
@@ -74,6 +74,6 @@ class Module extends ContentContainerModule
      */
     public function getVersion()
     {
-        return '1.0.0';
+        return '1.0.0.1';
     }
 }

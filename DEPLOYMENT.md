@@ -58,6 +58,11 @@ sudo find protected/modules/space-conduct-agreement/ -type d -exec chmod 755 {} 
 sudo chmod -R 755 protected/modules/space-conduct-agreement/
 ```
 
+### Step 2.5: No Core Modifications Required ✅
+**Important:** This module has been updated to use the standard HumHub navigation menu system. No core template modifications are required.
+
+The module now adds a "Code of Conduct" menu item to the space navigation (left sidebar) for space administrators, following the same pattern as other HumHub modules.
+
 ### Step 3: Run Database Migrations
 ```bash
 # Navigate to HumHub directory
@@ -107,10 +112,11 @@ php protected/yii module/info space-conduct-agreement
 - Ensure space administrators have the "Manage Conduct Agreement" permission
 
 ### 2. Configure Conduct Agreements
-1. Go to any space's admin panel
-2. Look for "Conduct Agreement" in the admin menu
-3. Configure the agreement text for the space
-4. Set whether the agreement is required for joining
+1. Go to any space where you are an administrator
+2. Look for "Code of Conduct" in the left navigation sidebar
+3. Click the menu item to access the conduct agreement management interface
+4. Configure the agreement text for the space
+5. Set whether the agreement is required for joining
 
 ### 3. Test Module Functionality
 1. Create a test space
@@ -133,7 +139,7 @@ tail -f /var/log/nginx/error.log    # For Nginx
 
 ### Common Issues
 
-#### 1. Module Not Appearing in Admin Panel
+#### 1. Menu Item Not Appearing
 ```bash
 # Check if module files are in correct location
 ls -la protected/modules/space-conduct-agreement/
@@ -143,6 +149,9 @@ cat protected/modules/space-conduct-agreement/config.php
 
 # Clear cache and try again
 php protected/yii cache/flush-all
+
+# Check module logs for errors
+tail -f protected/runtime/logs/app.log
 ```
 
 #### 2. Database Migration Errors
@@ -296,6 +305,12 @@ php protected/yii cache/flush-all
 - Maintain audit trails for compliance
 
 ## Version History
+
+- **1.0.1** - Updated to use navigation menu (no core modifications)
+  - Removed requirement for core template modifications
+  - Added navigation menu integration
+  - Improved URL routing with space container support
+  - Better integration with HumHub standards
 
 - **1.0.0** - Initial production release
   - Space-specific conduct agreements
