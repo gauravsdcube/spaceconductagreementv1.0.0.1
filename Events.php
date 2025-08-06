@@ -196,7 +196,7 @@ class Events
             'isActive' => (Yii::$app->controller->module && 
                           Yii::$app->controller->module->id === 'space-conduct-agreement' && 
                           Yii::$app->controller->id === 'admin'),
-            'sortOrder' => 500,
+            'sortOrder' => 20001,
         ]);
     }
 
