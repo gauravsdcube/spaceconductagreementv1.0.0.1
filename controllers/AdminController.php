@@ -56,10 +56,16 @@ class AdminController extends SpaceController
         
         // Debug: Log the current space ID
         Yii::info("AdminController: Processing for Space ID: " . $space->id . " (" . $space->name . ")", 'spaceconductagreement');
+        
+        // Debug: Show all existing agreements for this space
+        $allAgreements = SpaceAgreement::getAllForSpace($space->id);
+        foreach ($allAgreements as $agreement) {
+            Yii::info("AdminController: Existing agreement ID " . $agreement->id . " for Space " . $space->id . " - Active: " . $agreement->is_active . " - Title: " . $agreement->title, 'spaceconductagreement');
+        }
 
         // Check if this is a POST request (form submission)
         if (Yii::$app->request->isPost) {
-            // Create new model and load POST data
+            // AGGRESSIVE APPROACH: Always create a completely new agreement
             $model = new SpaceAgreement();
             $model->space_id = $space->id;
             $model->is_active = 1;
@@ -68,10 +74,11 @@ class AdminController extends SpaceController
                 // Debug: Log what was loaded
                 Yii::info("AdminController POST: Loaded model with space_id: " . $model->space_id . ", title: " . $model->title, 'spaceconductagreement');
                 
-                // Ensure space_id is set correctly
+                // FORCE space_id to be correct for this space
                 $model->space_id = $space->id;
+                $model->is_active = 1;
                 
-                // Deactivate all previous agreements for THIS SPACE ONLY
+                // Deactivate ALL previous agreements for THIS SPACE ONLY
                 SpaceAgreement::deactivateAllForSpace($space->id);
                 
                 // Save the new agreement for THIS SPACE
@@ -85,18 +92,24 @@ class AdminController extends SpaceController
                 }
             }
         } else {
-            // GET request - check if this space already has an active agreement
-            $existingAgreement = SpaceAgreement::getActiveForSpace($space->id);
+            // GET request - ALWAYS create a fresh model, never load existing
+            // This prevents any possibility of content copying
+            Yii::info("AdminController: Creating fresh model for Space " . $space->id, 'spaceconductagreement');
             
-            // Debug: Log what we found
+            $model = new SpaceAgreement();
+            $model->space_id = $space->id;
+            $model->is_active = 1;
+            
+            // Check if there's an existing agreement to show as reference
+            $existingAgreement = SpaceAgreement::getActiveForSpace($space->id);
             if ($existingAgreement) {
                 Yii::info("AdminController: Found existing agreement for Space " . $space->id . " - ID: " . $existingAgreement->id, 'spaceconductagreement');
-                $model = $existingAgreement;
+                // Copy content to new model for editing, but keep it as a NEW record
+                $model->title = $existingAgreement->title;
+                $model->content = $existingAgreement->content;
+                // Don't copy the ID - this ensures it's treated as a new record
             } else {
-                Yii::info("AdminController: No existing agreement for Space " . $space->id . " - creating new", 'spaceconductagreement');
-                $model = new SpaceAgreement();
-                $model->space_id = $space->id;
-                $model->is_active = 1;
+                Yii::info("AdminController: No existing agreement for Space " . $space->id . " - creating completely new", 'spaceconductagreement');
             }
         }
 

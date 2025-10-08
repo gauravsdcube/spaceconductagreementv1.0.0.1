@@ -105,7 +105,21 @@ class SpaceAgreement extends ActiveRecord
      */
     public static function deactivateAllForSpace($spaceId)
     {
-        return static::updateAll(['is_active' => 0], ['space_id' => $spaceId]);
+        $result = static::updateAll(['is_active' => 0], ['space_id' => $spaceId]);
+        Yii::info("SpaceAgreement::deactivateAllForSpace($spaceId): Deactivated $result agreements", 'spaceconductagreement');
+        return $result;
+    }
+
+    /**
+     * Get all agreements for a specific space (for debugging)
+     * @param integer $spaceId
+     * @return SpaceAgreement[]
+     */
+    public static function getAllForSpace($spaceId)
+    {
+        $agreements = static::findAll(['space_id' => $spaceId]);
+        Yii::info("SpaceAgreement::getAllForSpace($spaceId): Found " . count($agreements) . " agreements", 'spaceconductagreement');
+        return $agreements;
     }
 
     /**
