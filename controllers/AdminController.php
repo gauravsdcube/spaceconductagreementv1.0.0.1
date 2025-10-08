@@ -53,6 +53,9 @@ class AdminController extends SpaceController
     public function actionIndex()
     {
         $space = $this->contentContainer;
+        
+        // Debug: Log the current space ID
+        Yii::info("AdminController: Processing for Space ID: " . $space->id . " (" . $space->name . ")", 'spaceconductagreement');
 
         // Check if this is a POST request (form submission)
         if (Yii::$app->request->isPost) {
@@ -62,14 +65,22 @@ class AdminController extends SpaceController
             $model->is_active = 1;
             
             if ($model->load(Yii::$app->request->post())) {
+                // Debug: Log what was loaded
+                Yii::info("AdminController POST: Loaded model with space_id: " . $model->space_id . ", title: " . $model->title, 'spaceconductagreement');
+                
+                // Ensure space_id is set correctly
+                $model->space_id = $space->id;
+                
                 // Deactivate all previous agreements for THIS SPACE ONLY
                 SpaceAgreement::deactivateAllForSpace($space->id);
                 
                 // Save the new agreement for THIS SPACE
                 if ($model->save()) {
+                    Yii::info("AdminController POST: Successfully saved agreement for Space " . $space->id, 'spaceconductagreement');
                     Yii::$app->session->setFlash('success', 'Agreement saved successfully for ' . $space->name . '.');
                     return $this->redirect($space->createUrl());
                 } else {
+                    Yii::error("AdminController POST: Failed to save agreement. Errors: " . json_encode($model->errors), 'spaceconductagreement');
                     Yii::$app->session->setFlash('error', 'Failed to save agreement. Please try again.');
                 }
             }
@@ -77,11 +88,12 @@ class AdminController extends SpaceController
             // GET request - check if this space already has an active agreement
             $existingAgreement = SpaceAgreement::getActiveForSpace($space->id);
             
+            // Debug: Log what we found
             if ($existingAgreement) {
-                // Load existing agreement for editing
+                Yii::info("AdminController: Found existing agreement for Space " . $space->id . " - ID: " . $existingAgreement->id, 'spaceconductagreement');
                 $model = $existingAgreement;
             } else {
-                // Create new empty model for this space
+                Yii::info("AdminController: No existing agreement for Space " . $space->id . " - creating new", 'spaceconductagreement');
                 $model = new SpaceAgreement();
                 $model->space_id = $space->id;
                 $model->is_active = 1;

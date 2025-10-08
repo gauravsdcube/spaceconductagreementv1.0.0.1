@@ -27,6 +27,10 @@ $this->title = 'Manage Code of Conduct - ' . $space->name;
         
         <?php $form = ActiveForm::begin(['id' => 'space-conduct-form']); ?>
         
+        <!-- Hidden field to ensure space_id is always set -->
+        <?= $form->field($model, 'space_id')->hiddenInput()->label(false) ?>
+        <?= $form->field($model, 'is_active')->hiddenInput()->label(false) ?>
+        
         <div class="modal-body">
             <div class="alert alert-info">
                 <strong>Space:</strong> <?= Html::encode($space->name) ?><br>

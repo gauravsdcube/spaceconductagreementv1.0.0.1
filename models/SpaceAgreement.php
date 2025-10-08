@@ -83,10 +83,19 @@ class SpaceAgreement extends ActiveRecord
      */
     public static function getActiveForSpace($spaceId)
     {
-        return static::findOne([
+        $agreement = static::findOne([
             'space_id' => $spaceId,
             'is_active' => 1
         ]);
+        
+        // Debug: Log the query result
+        if ($agreement) {
+            Yii::info("SpaceAgreement::getActiveForSpace($spaceId): Found agreement ID " . $agreement->id . " with title: " . $agreement->title, 'spaceconductagreement');
+        } else {
+            Yii::info("SpaceAgreement::getActiveForSpace($spaceId): No active agreement found", 'spaceconductagreement');
+        }
+        
+        return $agreement;
     }
 
     /**
