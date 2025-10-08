@@ -54,25 +54,37 @@ class AdminController extends SpaceController
     {
         $space = $this->contentContainer;
 
-        // Always create a new model for the form
-        $model = new SpaceAgreement();
-        $model->space_id = $space->id;
-        $model->is_active = 1;
-
-        if ($model->load(Yii::$app->request->post())) {
-            // Deactivate all previous agreements for this space
-            SpaceAgreement::updateAll(['is_active' => 0], ['space_id' => $space->id]);
-            // Save the new agreement
-            if ($model->save()) {
-                Yii::$app->session->setFlash('success', 'Agreement saved successfully.');
-                return $this->redirect($space->createUrl());
+        // Check if this is a POST request (form submission)
+        if (Yii::$app->request->isPost) {
+            // Create new model and load POST data
+            $model = new SpaceAgreement();
+            $model->space_id = $space->id;
+            $model->is_active = 1;
+            
+            if ($model->load(Yii::$app->request->post())) {
+                // Deactivate all previous agreements for THIS SPACE ONLY
+                SpaceAgreement::deactivateAllForSpace($space->id);
+                
+                // Save the new agreement for THIS SPACE
+                if ($model->save()) {
+                    Yii::$app->session->setFlash('success', 'Agreement saved successfully for ' . $space->name . '.');
+                    return $this->redirect($space->createUrl());
+                } else {
+                    Yii::$app->session->setFlash('error', 'Failed to save agreement. Please try again.');
+                }
             }
         } else {
-            // If GET, prefill with the latest active agreement if it exists
-            $latest = SpaceAgreement::findOne(['space_id' => $space->id, 'is_active' => 1]);
-            if ($latest) {
-                $model->title = $latest->title;
-                $model->content = $latest->content;
+            // GET request - check if this space already has an active agreement
+            $existingAgreement = SpaceAgreement::getActiveForSpace($space->id);
+            
+            if ($existingAgreement) {
+                // Load existing agreement for editing
+                $model = $existingAgreement;
+            } else {
+                // Create new empty model for this space
+                $model = new SpaceAgreement();
+                $model->space_id = $space->id;
+                $model->is_active = 1;
             }
         }
 

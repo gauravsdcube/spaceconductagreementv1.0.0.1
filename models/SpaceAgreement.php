@@ -77,11 +77,40 @@ class SpaceAgreement extends ActiveRecord
     }
 
     /**
+     * Get active agreement for a specific space
+     * @param integer $spaceId
+     * @return SpaceAgreement|null
+     */
+    public static function getActiveForSpace($spaceId)
+    {
+        return static::findOne([
+            'space_id' => $spaceId,
+            'is_active' => 1
+        ]);
+    }
+
+    /**
+     * Deactivate all agreements for a specific space
+     * @param integer $spaceId
+     * @return integer Number of affected rows
+     */
+    public static function deactivateAllForSpace($spaceId)
+    {
+        return static::updateAll(['is_active' => 0], ['space_id' => $spaceId]);
+    }
+
+    /**
      * @inheritdoc
      */
     public function beforeSave($insert)
     {
         if (parent::beforeSave($insert)) {
+            // Ensure space_id is set and valid
+            if (empty($this->space_id)) {
+                $this->addError('space_id', 'Space ID is required.');
+                return false;
+            }
+            
             if ($insert) {
                 $this->created_at = date('Y-m-d H:i:s');
                 $this->created_by = Yii::$app->user->id;
