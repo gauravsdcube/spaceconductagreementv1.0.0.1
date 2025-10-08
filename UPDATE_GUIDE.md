@@ -1,7 +1,7 @@
 # Space Conduct Agreement Module - Update Guide
 
 **Author:** D Cube Consulting (info@dcubeconsulting.co.uk)  
-**Version:** 1.0.0
+**Version:** 1.0.2
 
 ## Overview
 

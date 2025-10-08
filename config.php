@@ -13,7 +13,7 @@ return [
     'id' => 'space-conduct-agreement',
     'class' => 'humhub\\modules\\spaceconductagreement\\Module',
     'namespace' => 'humhub\\modules\\spaceconductagreement',
-    'version' => '1.0.0.1',
+    'version' => '1.0.2',
     'urlManagerRules' => [
         '<spaceContainer>/space-conduct-agreement/admin' => 'space-conduct-agreement/admin/index',
         '<spaceContainer>/space-conduct-agreement/admin/index' => 'space-conduct-agreement/admin/index',

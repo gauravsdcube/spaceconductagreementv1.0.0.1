@@ -54,26 +54,33 @@ class AdminController extends SpaceController
     {
         $space = $this->contentContainer;
 
-        // Always create a new model for the form
+        if (Yii::$app->request->isPost) {
+            $model = new SpaceAgreement();
+            
+            if ($model->load(Yii::$app->request->post())) {
+                $model->space_id = $space->id;
+                $model->is_active = 1;
+                
+                SpaceAgreement::deactivateAllForSpace($space->id);
+                
+                if ($model->save()) {
+                    Yii::$app->session->setFlash('success', 'Agreement saved successfully for ' . $space->name . '.');
+                    return $this->redirect($space->createUrl());
+                } else {
+                    Yii::$app->session->setFlash('error', 'Failed to save agreement. Please try again.');
+                }
+            } else {
+                Yii::$app->session->setFlash('error', 'Failed to load form data. Please try again.');
+            }
+        }
+        
         $model = new SpaceAgreement();
         $model->space_id = $space->id;
         $model->is_active = 1;
-
-        if ($model->load(Yii::$app->request->post())) {
-            // Deactivate all previous agreements for this space
-            SpaceAgreement::updateAll(['is_active' => 0], ['space_id' => $space->id]);
-            // Save the new agreement
-            if ($model->save()) {
-                Yii::$app->session->setFlash('success', 'Agreement saved successfully.');
-                return $this->redirect($space->createUrl());
-            }
-        } else {
-            // If GET, prefill with the latest active agreement if it exists
-            $latest = SpaceAgreement::findOne(['space_id' => $space->id, 'is_active' => 1]);
-            if ($latest) {
-                $model->title = $latest->title;
-                $model->content = $latest->content;
-            }
+        
+        $existingAgreement = SpaceAgreement::getActiveForSpace($space->id);
+        if ($existingAgreement) {
+            $model = $existingAgreement;
         }
 
         return $this->render('index', [

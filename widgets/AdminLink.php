@@ -28,8 +28,7 @@ class AdminLink extends Widget
             '<i class="fa fa-file-text-o"></i> Manage Code of Conduct',
             $url,
             [
-                'class' => 'btn btn-sm btn-default',
-                'data-target' => '#globalModal'
+                'class' => 'btn btn-sm btn-default'
             ]
         );
     }

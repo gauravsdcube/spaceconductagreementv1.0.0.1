@@ -1,8 +1,8 @@
-# Space Conduct Agreement Module - Release v1.0.0
+# Space Conduct Agreement Module - Release v1.0.2
 
 **Author:** D Cube Consulting (info@dcubeconsulting.co.uk)  
 **Release Date:** January 2025  
-**Version:** 1.0.0  
+**Version:** 1.0.2  
 **HumHub Compatibility:** 1.15.0+
 
 ## Overview
@@ -221,7 +221,7 @@ Check HumHub logs for detailed error information:
 
 ## Changelog
 
-### Version 1.0.0 (January 2025)
+### Version 1.0.2 (January 2025)
 - **Initial Release**
   - Space-specific conduct agreements
   - User acceptance tracking and validation

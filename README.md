@@ -4,7 +4,7 @@ A production-ready HumHub module that requires users to accept space-specific co
 
 **Copyright © 2025 D Cube Consulting Ltd. All rights reserved.**
 
-## 🚀 Version: 1.0.0 (Production Ready)
+## 🚀 Version: 1.0.2 (Production Ready)
 
 ### Overview
 
@@ -17,18 +17,21 @@ This module enhances HumHub's space functionality by adding a mandatory conduct 
 - **Admin management interface**: Space administrators can create, edit, and manage conduct agreements
 - **User acceptance tracking**: System tracks when users accept agreements with timestamps
 - **Automatic enforcement**: Users must accept agreements before gaining full space access
-- **Modal interface**: Clean, user-friendly interface for agreement management
+- **Full page interface**: Clean, user-friendly interface for agreement management
 - **Flash notifications**: Informative messages guide users through the process
 
 ### Admin Features
 - **Agreement Management**: Create, edit, and activate/deactivate conduct agreements
-- **Rich Text Editor**: Use HumHub's rich text editor for formatting agreements
+- **Rich Text Editor**: Full-featured rich text editor with formatting, headings, lists, and more
+- **Professional Formatting**: Bold, italic, headings, lists, links, and other formatting options
+- **Space Isolation**: Each space maintains its own distinct code of conduct
+- **Full Page Interface**: Improved user experience with dedicated page layout
 - **Version Tracking**: System tracks agreement versions and user acceptance
 - **Admin Dashboard**: Centralized view of agreement status and user acceptance
 
 ### User Experience
 - **Seamless Integration**: Agreements appear automatically when joining spaces
-- **Clear Interface**: User-friendly modal dialogs for agreement acceptance
+- **Clear Interface**: User-friendly interface for agreement acceptance
 - **Status Tracking**: Users can see their agreement acceptance status
 - **Automatic Redirects**: Users are guided through the acceptance process
 
@@ -333,7 +336,7 @@ php protected/vendor/bin/codecept run --config protected/tests/codeception.yml u
 
 ## 📝 Changelog
 
-### Version 1.0.0 (Production Ready)
+### Version 1.0.2 (Production Ready)
 - ✅ **Added**: Space-specific conduct agreement system
 - ✅ **Added**: Admin management interface with rich text editor
 - ✅ **Added**: User acceptance tracking with timestamps

@@ -1,7 +1,7 @@
 # Space Conduct Agreement Module - Production Deployment Guide
 
 **Author:** D Cube Consulting (info@dcubeconsulting.co.uk)  
-**Version:** 1.0.0
+**Version:** 1.0.2
 
 ## Prerequisites
 
@@ -306,6 +306,7 @@ php protected/yii cache/flush-all
 
 ## Version History
 
+- **1.0.2** - Fixed content copying issue, improved UI, and enhanced form handling
 - **1.0.1** - Updated to use navigation menu (no core modifications)
   - Removed requirement for core template modifications
   - Added navigation menu integration

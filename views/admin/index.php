@@ -5,7 +5,8 @@
 
 use yii\helpers\Html;
 use yii\widgets\ActiveForm;
-use humhub\widgets\ModalDialog;
+use humhub\modules\content\widgets\richtext\RichTextField;
+use humhub\widgets\Button;
 
 /* @var $this yii\web\View */
 /* @var $model humhub\modules\spaceconductagreement\models\SpaceAgreement */
@@ -14,84 +15,103 @@ use humhub\widgets\ModalDialog;
 $this->title = 'Manage Code of Conduct - ' . $space->name;
 ?>
 
-<div class="modal-dialog modal-lg">
-    <div class="modal-content">
-        <div class="modal-header">
-            <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
-            <h4 class="modal-title">
-                <i class="fa fa-file-text-o"></i> 
-                <?= Html::encode($this->title) ?>
-            </h4>
-        </div>
-        
-        <?php $form = ActiveForm::begin(['id' => 'space-conduct-form']); ?>
-        
-        <div class="modal-body">
-            <div class="alert alert-info">
-                <strong>Space:</strong> <?= Html::encode($space->name) ?><br>
-                <small>Create a code of conduct that users must accept before joining this space.</small>
-            </div>
-            
-            <div class="form-group">
-                <?= $form->field($model, 'title')->textInput([
-                    'maxlength' => true,
-                    'placeholder' => 'e.g., "AVID Community Code of Conduct"'
-                ]) ?>
-            </div>
-            
-            <div class="form-group">
-                <?= $form->field($model, 'content')->textarea([
-                    'rows' => 12,
-                    'placeholder' => 'Enter the code of conduct that users must accept before joining this space...',
-                    'style' => 'font-family: inherit;'
-                ]) ?>
-                <small class="help-block">
-                    <strong>Example content:</strong><br>
-                    "Welcome to [Space Name]. By joining this space, you agree to:<br>
-                    • Maintain professional and respectful communication<br>
-                    • Share knowledge and expertise constructively<br>
-                    • Respect confidentiality and privacy<br>
-                    • Follow all applicable policies and guidelines"
-                </small>
-            </div>
-            
-            <div class="form-group">
-                <div class="checkbox">
-                    <label>
-                        <?= Html::activeCheckbox($model, 'is_active') ?>
-                        <strong>Require acceptance of this agreement</strong>
-                    </label>
+<div class="container">
+    <div class="row">
+        <div class="col-md-12">
+            <div class="panel panel-default">
+                <div class="panel-heading">
+                    <h3 class="panel-title">
+                        <i class="fa fa-file-text-o"></i> 
+                        <?= Html::encode($this->title) ?>
+                    </h3>
                 </div>
-                <p class="help-block">
-                    When checked, users will be required to accept this agreement before joining the space.
-                    Uncheck to disable the requirement temporarily.
-                </p>
-            </div>
+                <div class="panel-body">
+                    <?php $form = ActiveForm::begin(['id' => 'space-conduct-form']); ?>
+                    
+                    <!-- Hidden field to ensure space_id is always set -->
+                    <?= $form->field($model, 'space_id')->hiddenInput()->label(false) ?>
+                    <?= $form->field($model, 'is_active')->hiddenInput()->label(false) ?>
+                    
+                    <div class="alert alert-info">
+                        <strong>Space:</strong> <?= Html::encode($space->name) ?><br>
+                        <small>Create a code of conduct that users must accept before joining this space.</small>
+                    </div>
+                    
+                    <div class="form-group">
+                        <?= $form->field($model, 'title')->textInput([
+                            'maxlength' => true,
+                            'placeholder' => 'e.g., "AVID Community Code of Conduct"'
+                        ]) ?>
+                    </div>
+                    
+                    <div class="form-group">
+                        <?= $form->field($model, 'content')->widget(RichTextField::class, [
+                            'id' => 'space-conduct-content-' . $space->id,
+                            'placeholder' => 'Enter the code of conduct that users must accept before joining this space...',
+                            'pluginOptions' => ['maxHeight' => '400px'],
+                            'layout' => RichTextField::LAYOUT_BLOCK,
+                            'backupInterval' => 0
+                        ]) ?>
+                        <small class="help-block">
+                            <strong>Example content:</strong><br>
+                            "Welcome to [Space Name]. By joining this space, you agree to:<br>
+                            • Maintain professional and respectful communication<br>
+                            • Share knowledge and expertise constructively<br>
+                            • Respect confidentiality and privacy<br>
+                            • Follow all applicable policies and guidelines"
+                        </small>
+                    </div>
             
-            <?php if (!$model->isNewRecord): ?>
-            <div class="alert alert-warning">
-                <strong>Note:</strong> If you change the agreement content, existing members will need to re-accept the new terms.
+                    <div class="form-group">
+                        <div class="checkbox">
+                            <label>
+                                <?= Html::activeCheckbox($model, 'is_active') ?>
+                                <strong>Require acceptance of this agreement</strong>
+                            </label>
+                        </div>
+                        <p class="help-block">
+                            When checked, users will be required to accept this agreement before joining the space.
+                            Uncheck to disable the requirement temporarily.
+                        </p>
+                    </div>
+                    
+                    <?php if (!$model->isNewRecord): ?>
+                    <div class="alert alert-warning">
+                        <strong>Note:</strong> If you change the agreement content, existing members will need to re-accept the new terms.
+                    </div>
+                    <?php endif; ?>
+                    
+                    <div class="form-group">
+                        <?= Html::submitButton(
+                            '<i class="fa fa-save"></i> Save Agreement', 
+                            ['class' => 'btn btn-primary btn-lg']
+                        ) ?>
+                        <?= Html::a(
+                            '<i class="fa fa-arrow-left"></i> Back to Space', 
+                            $space->createUrl(), 
+                            ['class' => 'btn btn-default btn-lg']
+                        ) ?>
+                    </div>
+                    
+                    <?php ActiveForm::end(); ?>
+                </div>
             </div>
-            <?php endif; ?>
         </div>
-        
-        <div class="modal-footer">
-            <?= Html::submitButton(
-                '<i class="fa fa-save"></i> Save Agreement', 
-                ['class' => 'btn btn-primary']
-            ) ?>
-            <button type="button" class="btn btn-default" data-dismiss="modal">
-                <i class="fa fa-times"></i> Cancel
-            </button>
-        </div>
-        
-        <?php ActiveForm::end(); ?>
     </div>
 </div>
 
 <style>
-.modal-lg {
-    width: 900px;
+/* Page-specific styling */
+.panel {
+    margin-top: 20px;
+}
+.panel-heading {
+    background-color: #f5f5f5;
+    border-bottom: 1px solid #ddd;
+}
+.panel-title {
+    font-size: 18px;
+    font-weight: 600;
 }
 .form-group textarea {
     resize: vertical;
@@ -101,15 +121,35 @@ $this->title = 'Manage Code of Conduct - ' . $space->name;
     font-size: 12px;
     margin-top: 5px;
 }
-/* Fix modal z-index to appear above navigation */
-.modal {
-    z-index: 1050 !important;
+.btn-lg {
+    margin-right: 10px;
 }
-.modal-backdrop {
-    z-index: 1040 !important;
+.alert {
+    margin-bottom: 20px;
 }
-/* Ensure modal content is above backdrop */
-.modal-dialog {
-    z-index: 1060 !important;
+/* Rich text editor styling */
+.humhub-richtext {
+    min-height: 300px;
 }
-</style> 
+</style>
+
+<script>
+// Clear any existing backup data for this space to prevent content copying
+$(document).ready(function() {
+    const spaceId = <?= $space->id ?>;
+    const backupKey = 'space-conduct-content-' + spaceId;
+    
+    // Clear any existing backup data
+    if (typeof sessionStorage !== 'undefined') {
+        sessionStorage.removeItem(backupKey);
+    }
+    
+    // Also clear any backup data for other spaces to prevent cross-contamination
+    for (let i = 1; i <= 10; i++) { // Clear backup for space IDs 1-10
+        if (i !== spaceId) {
+            sessionStorage.removeItem('space-conduct-content-' + i);
+        }
+    }
+    
+});
+</script> 

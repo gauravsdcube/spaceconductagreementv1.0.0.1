@@ -36,16 +36,25 @@ class AgreementController extends Controller
      */
     public function actionShow($spaceId)
     {
+        // Log the space ID being requested
+        Yii::info("AgreementController::actionShow - Requested space ID: " . $spaceId, 'spaceconductagreement');
+        
         $space = Space::findOne($spaceId);
         if (!$space) {
+            Yii::error("AgreementController::actionShow - Space not found for ID: " . $spaceId, 'spaceconductagreement');
             throw new NotFoundHttpException();
         }
 
+        Yii::info("AgreementController::actionShow - Found space: " . $space->name . " (ID: " . $space->id . ")", 'spaceconductagreement');
+
         $spaceAgreement = SpaceAgreement::findOne(['space_id' => $spaceId, 'is_active' => 1]);
         if (!$spaceAgreement) {
+            Yii::info("AgreementController::actionShow - No active agreement found for space ID: " . $spaceId, 'spaceconductagreement');
             // No agreement required, redirect to space
             return $this->redirect($space->createUrl());
         }
+        
+        Yii::info("AgreementController::actionShow - Found agreement ID: " . $spaceAgreement->id . " for space: " . $space->name, 'spaceconductagreement');
 
         $user = Yii::$app->user->getIdentity();
         
