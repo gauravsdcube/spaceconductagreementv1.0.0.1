@@ -4,7 +4,7 @@ A production-ready HumHub module that requires users to accept space-specific co
 
 **Copyright © 2025 D Cube Consulting Ltd. All rights reserved.**
 
-## 🚀 Version: 1.0.1 (Production Ready)
+## 🚀 Version: 1.0.0 (Production Ready)
 
 ### Overview
 
@@ -22,8 +22,7 @@ This module enhances HumHub's space functionality by adding a mandatory conduct 
 
 ### Admin Features
 - **Agreement Management**: Create, edit, and activate/deactivate conduct agreements
-- **Rich Text Editor**: Full-featured rich text editor with formatting, headings, lists, and more
-- **Professional Formatting**: Bold, italic, headings, lists, links, and other formatting options
+- **Rich Text Editor**: Use HumHub's rich text editor for formatting agreements
 - **Version Tracking**: System tracks agreement versions and user acceptance
 - **Admin Dashboard**: Centralized view of agreement status and user acceptance
 

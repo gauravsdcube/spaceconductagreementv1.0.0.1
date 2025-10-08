@@ -5,7 +5,6 @@
 
 use yii\helpers\Html;
 use yii\helpers\Url;
-use humhub\modules\content\widgets\richtext\RichText;
 
 /* @var $this yii\web\View */
 /* @var $space humhub\modules\space\models\Space */
@@ -43,7 +42,7 @@ $this->params['breadcrumbs'][] = $agreement->title;
                     </div>
                     
                     <div class="agreement-content">
-                        <?= RichText::output($agreement->content) ?>
+                        <?= nl2br(Html::encode($agreement->content)) ?>
                     </div>
                     
                     <hr>
@@ -123,40 +122,6 @@ $this->params['breadcrumbs'][] = $agreement->title;
     margin: 20px 0;
     line-height: 1.8;
     font-size: 14px;
-}
-
-/* Rich text content styling */
-.agreement-content .humhub-richtext {
-    line-height: 1.8;
-}
-
-.agreement-content .humhub-richtext p {
-    margin-bottom: 12px;
-}
-
-.agreement-content .humhub-richtext ul,
-.agreement-content .humhub-richtext ol {
-    margin-bottom: 12px;
-    padding-left: 20px;
-}
-
-.agreement-content .humhub-richtext h1,
-.agreement-content .humhub-richtext h2,
-.agreement-content .humhub-richtext h3,
-.agreement-content .humhub-richtext h4,
-.agreement-content .humhub-richtext h5,
-.agreement-content .humhub-richtext h6 {
-    margin-top: 20px;
-    margin-bottom: 10px;
-    font-weight: 600;
-}
-
-.agreement-content .humhub-richtext blockquote {
-    border-left: 4px solid #ddd;
-    padding-left: 15px;
-    margin: 15px 0;
-    font-style: italic;
-    color: #666;
 }
 
 .agreement-content::-webkit-scrollbar {

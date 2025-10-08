@@ -77,63 +77,11 @@ class SpaceAgreement extends ActiveRecord
     }
 
     /**
-     * Get active agreement for a specific space
-     * @param integer $spaceId
-     * @return SpaceAgreement|null
-     */
-    public static function getActiveForSpace($spaceId)
-    {
-        $agreement = static::findOne([
-            'space_id' => $spaceId,
-            'is_active' => 1
-        ]);
-        
-        // Debug: Log the query result
-        if ($agreement) {
-            Yii::info("SpaceAgreement::getActiveForSpace($spaceId): Found agreement ID " . $agreement->id . " with title: " . $agreement->title, 'spaceconductagreement');
-        } else {
-            Yii::info("SpaceAgreement::getActiveForSpace($spaceId): No active agreement found", 'spaceconductagreement');
-        }
-        
-        return $agreement;
-    }
-
-    /**
-     * Deactivate all agreements for a specific space
-     * @param integer $spaceId
-     * @return integer Number of affected rows
-     */
-    public static function deactivateAllForSpace($spaceId)
-    {
-        $result = static::updateAll(['is_active' => 0], ['space_id' => $spaceId]);
-        Yii::info("SpaceAgreement::deactivateAllForSpace($spaceId): Deactivated $result agreements", 'spaceconductagreement');
-        return $result;
-    }
-
-    /**
-     * Get all agreements for a specific space (for debugging)
-     * @param integer $spaceId
-     * @return SpaceAgreement[]
-     */
-    public static function getAllForSpace($spaceId)
-    {
-        $agreements = static::findAll(['space_id' => $spaceId]);
-        Yii::info("SpaceAgreement::getAllForSpace($spaceId): Found " . count($agreements) . " agreements", 'spaceconductagreement');
-        return $agreements;
-    }
-
-    /**
      * @inheritdoc
      */
     public function beforeSave($insert)
     {
         if (parent::beforeSave($insert)) {
-            // Ensure space_id is set and valid
-            if (empty($this->space_id)) {
-                $this->addError('space_id', 'Space ID is required.');
-                return false;
-            }
-            
             if ($insert) {
                 $this->created_at = date('Y-m-d H:i:s');
                 $this->created_by = Yii::$app->user->id;

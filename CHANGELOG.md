@@ -2,25 +2,6 @@
 
 **Author:** D Cube Consulting (info@dcubeconsulting.co.uk)
 
-## [1.0.1] - 2025-01-XX
-### Added
-- Rich text editor for agreement content creation and editing
-- Enhanced formatting capabilities for conduct agreements
-- Improved user experience with professional text editing tools
-- Better content display with rich text rendering
-
-### Enhanced
-- Admin interface now uses HumHub's RichTextField widget
-- Agreement display now properly renders rich text content
-- Enhanced CSS styling for rich text content display
-- Improved typography and formatting options
-
-### Technical
-- Updated admin form to use RichTextField widget
-- Modified agreement display to use RichText::output()
-- Added proper rich text styling and formatting
-- Maintained backward compatibility with existing plain text content
-
 ## [1.0.0] - 2025-01-XX
 ### Added
 - Initial stable release of Space Conduct Agreement module

@@ -6,7 +6,6 @@
 use yii\helpers\Html;
 use yii\widgets\ActiveForm;
 use humhub\widgets\ModalDialog;
-use humhub\modules\content\widgets\richtext\RichTextField;
 
 /* @var $this yii\web\View */
 /* @var $model humhub\modules\spaceconductagreement\models\SpaceAgreement */
@@ -27,10 +26,6 @@ $this->title = 'Manage Code of Conduct - ' . $space->name;
         
         <?php $form = ActiveForm::begin(['id' => 'space-conduct-form']); ?>
         
-        <!-- Hidden field to ensure space_id is always set -->
-        <?= $form->field($model, 'space_id')->hiddenInput()->label(false) ?>
-        <?= $form->field($model, 'is_active')->hiddenInput()->label(false) ?>
-        
         <div class="modal-body">
             <div class="alert alert-info">
                 <strong>Space:</strong> <?= Html::encode($space->name) ?><br>
@@ -45,11 +40,10 @@ $this->title = 'Manage Code of Conduct - ' . $space->name;
             </div>
             
             <div class="form-group">
-                <?= $form->field($model, 'content')->widget(RichTextField::class, [
-                    'id' => 'space-conduct-content',
+                <?= $form->field($model, 'content')->textarea([
+                    'rows' => 12,
                     'placeholder' => 'Enter the code of conduct that users must accept before joining this space...',
-                    'pluginOptions' => ['maxHeight' => '400px'],
-                    'layout' => RichTextField::LAYOUT_BLOCK
+                    'style' => 'font-family: inherit;'
                 ]) ?>
                 <small class="help-block">
                     <strong>Example content:</strong><br>
